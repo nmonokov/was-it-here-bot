@@ -1,0 +1,27 @@
+# Dist files
+dist/
+
+# Node modules
+node_modules/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Compiled JavaScript files
+*.js
+*.js.map
+
+# Coverage
+coverage/
+
+# IntelliJ IDEA files
+.idea/
+
+# Other files
+.DS_Store
+.env
+logs/
+users/
+
+# Exclude
+!jest.config.js
