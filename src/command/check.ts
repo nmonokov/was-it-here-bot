@@ -6,7 +6,7 @@ import { compareImages } from '../image/compare';
 import axios from 'axios';
 
 /**
- * /bayan - check comman if selected message in reply is an image already occurred in the chat or not.
+ * /bayan - check command if selected message in reply is an image already occurred in the chat or not.
  *          if message is old then it will be found in the chat and being replied to with 'this' and a sticker.
  *          if message is new then just sticker which means that this image is new will be sent.
  */

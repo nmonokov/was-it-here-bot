@@ -1,5 +1,6 @@
-import { Collection, InsertOneResult, MongoClient, ServerApiVersion } from 'mongodb';
+import { Collection, InsertOneResult, MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
 import { ImageData } from '../model';
+import { logger } from '../utils/logger';
 
 const DEFAULT_DATABASE = 'telegram-bots';
 const DEFAULT_COLLECTION = 'was-it-here-collection';
@@ -16,9 +17,16 @@ export class DbClient {
   private constructor(username: string, password: string, clusterId: string, ttl: number) {
     const uri = `mongodb+srv://${username}:${password}@${clusterId}.mongodb.net/?retryWrites=true&w=majority`;
     this._client = new MongoClient(uri, { serverApi: ServerApiVersion.v1 });
-    this._collection = this.connect();
-    this._collection.createIndex('chatId');
-    this._collection.createIndex('created', { expireAfterSeconds: ttl })
+    try {
+      this._collection = this.connect();
+      this._collection.createIndex('chatId');
+      this._collection.createIndex('created', { expireAfterSeconds: ttl })
+    } catch (error: any) {
+      logger.error('Failed to establish connection to MongoDB.', error);
+      throw Error(error.message);
+    } finally {
+      this._client.close();
+    }
   }
 
   private connect(): Collection<ImageData> {
@@ -28,11 +36,24 @@ export class DbClient {
   }
 
   async addData(imageData: ImageData): Promise<InsertOneResult<ImageData>> {
-    return this._collection.insertOne(imageData);
+    try {
+      return this._collection.insertOne(imageData);
+    } catch (error) {
+      logger.error('Failed to save data to MongoDB.', error)
+      return {
+        acknowledged: false,
+        insertedId: ObjectId.createFromHexString(''),
+      };
+    }
   }
 
   async getAll(chatId: number): Promise<ImageData[]> {
-    return this._collection.find({ chatId }).toArray();
+    try {
+      return this._collection.find({ chatId }).toArray();
+    } catch (error) {
+      logger.info('Failed to fetch data from MongoDB.');
+      return [];
+    }
   }
 
   static Builder = class {
