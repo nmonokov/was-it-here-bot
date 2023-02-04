@@ -2,7 +2,7 @@ import { Collection, InsertOneResult, MongoClient, ObjectId, ServerApiVersion } 
 import { ImageData } from '../model';
 import { logger } from '../utils/logger';
 
-const DEFAULT_DATABASE = 'telegram-bots';
+const DEFAULT_DATABASE = 'telegram-bots-test';
 const DEFAULT_COLLECTION = 'was-it-here-collection';
 
 /**

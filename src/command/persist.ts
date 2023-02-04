@@ -17,7 +17,7 @@ export class PersistCommand extends ParentCommand {
   }
 
   async execute(message: TelegramBot.Message): Promise<void> {
-    logger.info(message);
+    logger.debug(message);
     if (message.text?.startsWith('/')) {
       return;
     }

@@ -1,4 +1,5 @@
 import Jimp from 'jimp';
+import { logger } from '../utils/logger';
 
 /**
  * Compares two images and returns whether they are considered similar or not based on a given threshold.
@@ -42,6 +43,7 @@ export const compareImages = async (
   }
 
   const meanSquaredError = differenceSquaredSum / (maxWidth * maxHeight);
-
-  return meanSquaredError < threshold;
+  const isSame = meanSquaredError < threshold;
+  logger.debug({ meanSquaredError, isSame });
+  return isSame;
 }
