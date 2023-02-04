@@ -28,8 +28,8 @@ Have you ever had an argument in the chat that this meme was already there? Have
     ```
     Pick *cluster0.xxxxxxx* and put it into the variable `DB_CLUSTER_ID`.
     Setup is complete. On bot startup the **Database** and the **Collection** will be created automatically. If you want to change it, go to environment variables and pick your own names for those and still they will be added automatically.
-    * DB_NAME - Database
-    * DB_COLLECTION - Collection
+    * `DB_NAME` - Database
+    * `DB_COLLECTION_NAME` - Collection
 11. `npm install`
 12. `npm start`
 

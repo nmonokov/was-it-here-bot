@@ -13,6 +13,8 @@ const EXPRESS_PORT: string = property('EXPRESS_PORT');
 const DB_USERNAME: string = property('DB_USERNAME');
 const DB_PASSWORD: string = property('DB_PASSWORD');
 const DB_CLUSTER_ID: string = property('DB_CLUSTER_ID');
+const DB_NAME: string = property('DB_NAME', 'telegram-bots');
+const DB_COLLECTION_NAME: string = property('DB_COLLECTION_NAME', 'was-it-here-collection');
 const INDEX_TTL_MONTH: string = property('INDEX_TTL_MONTH', 3);
 const IMAGE_SIMILARITY_THRESHOLD: number = Number(property('IMAGE_SIMILARITY_THRESHOLD', 500));
 

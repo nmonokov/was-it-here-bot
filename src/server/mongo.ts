@@ -2,9 +2,6 @@ import { Collection, InsertOneResult, MongoClient, ObjectId, ServerApiVersion } 
 import { ImageData } from '../model';
 import { logger } from '../utils/logger';
 
-const DEFAULT_DATABASE = 'telegram-bots-test';
-const DEFAULT_COLLECTION = 'was-it-here-collection';
-
 /**
  * The DbClient class is a database client that connects to a MongoDB instance
  * using the provided username, password and cluster ID. The class provides an interface
@@ -13,10 +10,21 @@ const DEFAULT_COLLECTION = 'was-it-here-collection';
 export class DbClient {
   private readonly _client: MongoClient;
   private readonly _collection: Collection<ImageData>;
+  private readonly _dbName: string;
+  private readonly _dbCollectionName: string;
 
-  private constructor(username: string, password: string, clusterId: string, ttl: number) {
+  private constructor(
+    username: string,
+    password: string,
+    clusterId: string,
+    dbName: string,
+    dbCollectionName: string,
+    ttl: number
+  ) {
     const uri = `mongodb+srv://${username}:${password}@${clusterId}.mongodb.net/?retryWrites=true&w=majority`;
     this._client = new MongoClient(uri, { serverApi: ServerApiVersion.v1 });
+    this._dbName = dbName;
+    this._dbCollectionName = dbCollectionName;
     try {
       this._collection = this.connect();
       this._collection.createIndex('chatId');
@@ -31,8 +39,8 @@ export class DbClient {
 
   private connect(): Collection<ImageData> {
     return this._client
-      .db(DEFAULT_DATABASE)
-      .collection(DEFAULT_COLLECTION);
+      .db(this._dbName)
+      .collection(this._dbCollectionName);
   }
 
   async addData(imageData: ImageData): Promise<InsertOneResult<ImageData>> {
@@ -51,7 +59,7 @@ export class DbClient {
     try {
       return this._collection.find({ chatId }).toArray();
     } catch (error) {
-      logger.info('Failed to fetch data from MongoDB.');
+      logger.error('Failed to fetch data from MongoDB.');
       return [];
     }
   }
@@ -60,6 +68,8 @@ export class DbClient {
     private static _username: string;
     private static _password: string;
     private static _clusterId: string;
+    private static _dbName: string;
+    private static _dbCollectionName: string;
     private static _ttl: number;
 
     static username(username: string) {
@@ -77,6 +87,16 @@ export class DbClient {
       return this;
     }
 
+    static dbName(dbName: string) {
+      this._dbName = dbName;
+      return this;
+    }
+
+    static dbCollectionName(dbCollectionName: string) {
+      this._dbCollectionName = dbCollectionName;
+      return this;
+    }
+
     static ttlMonth(ttlMonth: string) {
       const daysInMonth = 30;
       const hoursInDay = 24;
@@ -87,7 +107,14 @@ export class DbClient {
     }
 
     static build() {
-      return new DbClient(this._username, this._password, this._clusterId, this._ttl);
+      return new DbClient(
+        this._username,
+        this._password,
+        this._clusterId,
+        this._dbName,
+        this._dbCollectionName,
+        this._ttl,
+      );
     }
   };
 }
