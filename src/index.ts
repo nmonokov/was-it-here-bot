@@ -24,6 +24,8 @@ const dbClient: DbClient = DbClient.Builder
   .password(DB_PASSWORD)
   .clusterId(DB_CLUSTER_ID)
   .ttlMonth(INDEX_TTL_MONTH)
+  .dbName(DB_NAME)
+  .dbCollectionName(DB_COLLECTION_NAME)
   .build();
 WebHookServer.Builder
   .url(APPLICATION_URL)
