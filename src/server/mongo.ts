@@ -1,6 +1,8 @@
-import { Collection, InsertOneResult, MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
+import { Collection, MongoClient, ServerApiVersion } from 'mongodb';
 import { ImageData } from '../model';
 import { logger } from '../utils/logger';
+import { MongoCollection } from './mongoCollection';
+import { DbCollection } from './dbCollection';
 
 /**
  * The DbClient class is a database client that connects to a MongoDB instance
@@ -9,9 +11,9 @@ import { logger } from '../utils/logger';
  */
 export class DbClient {
   private readonly _client: MongoClient;
-  private readonly _collection: Collection<ImageData>;
   private readonly _dbName: string;
   private readonly _dbCollectionName: string;
+  private readonly _ttl: number;
 
   private constructor(
     username: string,
@@ -25,42 +27,22 @@ export class DbClient {
     this._client = new MongoClient(uri, { serverApi: ServerApiVersion.v1 });
     this._dbName = dbName;
     this._dbCollectionName = dbCollectionName;
+    this._ttl = ttl;
+  }
+
+  connect(): DbCollection<Collection<ImageData>> {
     try {
-      this._collection = this.connect();
-      this._collection.createIndex('chatId');
-      this._collection.createIndex('created', { expireAfterSeconds: ttl });
+      const collection: Collection<ImageData> = this._client
+        .db(this._dbName)
+        .collection(this._dbCollectionName);
+      collection.createIndex('chatId');
+      collection.createIndex('created', { expireAfterSeconds: this._ttl });
+      return new MongoCollection(collection);
     } catch (error: any) {
       logger.error('Failed to establish connection to MongoDB.', error);
       throw Error(error.message);
     } finally {
       this._client.close();
-    }
-  }
-
-  private connect(): Collection<ImageData> {
-    return this._client
-      .db(this._dbName)
-      .collection(this._dbCollectionName);
-  }
-
-  async addData(imageData: ImageData): Promise<InsertOneResult<ImageData>> {
-    try {
-      return this._collection.insertOne(imageData);
-    } catch (error) {
-      logger.error('Failed to save data to MongoDB.', error);
-      return {
-        acknowledged: false,
-        insertedId: ObjectId.createFromHexString(''),
-      };
-    }
-  }
-
-  async getAll(chatId: number): Promise<ImageData[]> {
-    try {
-      return this._collection.find({ chatId }).toArray();
-    } catch (error) {
-      logger.error('Failed to fetch data from MongoDB.');
-      return [];
     }
   }
 

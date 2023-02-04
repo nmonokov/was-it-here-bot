@@ -1,9 +1,9 @@
 import { ParentCommand } from './parent';
 import TelegramBot from 'node-telegram-bot-api';
-import { DbClient } from '../server/mongo';
 import { ImageData } from '../model';
-import { InsertOneResult } from 'mongodb';
+import { Collection, InsertOneResult } from 'mongodb';
 import { logger } from '../utils/logger';
+import { DbCollection } from '../server/dbCollection';
 
 /**
  * Persists all images sent to the chat as
@@ -11,9 +11,9 @@ import { logger } from '../utils/logger';
  *  messageId - a message to reply to when the image be found
  *  filePath - the path to image file in the telegram server
  */
-export class PersistCommand extends ParentCommand {
-  constructor(bot: TelegramBot, dbClient: DbClient) {
-    super(bot, dbClient);
+export class PersistCommand extends ParentCommand<DbCollection<Collection<ImageData>>> {
+  constructor(bot: TelegramBot, collection: DbCollection<Collection<ImageData>>) {
+    super(bot, collection);
   }
 
   async execute(message: TelegramBot.Message): Promise<void> {
@@ -25,7 +25,7 @@ export class PersistCommand extends ParentCommand {
       return;
     }
     const middleSizeImage = this.getMiddleSizeImage(message.photo);
-    const fileInfo = await this.bot.getFile(middleSizeImage.file_id);
+    const fileInfo = await this._bot.getFile(middleSizeImage.file_id);
     if (fileInfo.file_path) {
       const imageData: ImageData = {
         chatId: message.chat.id,
@@ -33,7 +33,7 @@ export class PersistCommand extends ParentCommand {
         filePath: fileInfo.file_path,
         created: new Date(),
       };
-      const addedData: InsertOneResult<ImageData> = await this.dbClient.addData(imageData);
+      const addedData: InsertOneResult<ImageData> = await this._collection.addData(imageData);
       if (addedData.acknowledged) {
         logger.debug(`Entry: ${addedData.insertedId} saved.`);
       } else {

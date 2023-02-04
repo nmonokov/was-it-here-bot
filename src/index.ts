@@ -5,6 +5,9 @@ import { WebHookServer } from './server/express';
 import { DbClient } from './server/mongo';
 import { CheckCommand } from './command/check';
 import { PersistCommand } from './command/persist';
+import { Collection } from 'mongodb';
+import { DbCollection } from './server/dbCollection';
+import { ImageData } from './model';
 
 dotenv.config();
 const BOT_TOKEN: string = property('BOT_TOKEN');
@@ -19,14 +22,15 @@ const INDEX_TTL_MONTH: string = property('INDEX_TTL_MONTH', 3);
 const IMAGE_SIMILARITY_THRESHOLD: number = Number(property('IMAGE_SIMILARITY_THRESHOLD', 500));
 
 const bot = new TelegramBot(BOT_TOKEN);
-const dbClient: DbClient = DbClient.Builder
+const collection: DbCollection<Collection<ImageData>> = DbClient.Builder
   .username(DB_USERNAME)
   .password(DB_PASSWORD)
   .clusterId(DB_CLUSTER_ID)
   .ttlMonth(INDEX_TTL_MONTH)
   .dbName(DB_NAME)
   .dbCollectionName(DB_COLLECTION_NAME)
-  .build();
+  .build()
+.connect();
 WebHookServer.Builder
   .url(APPLICATION_URL)
   .port(EXPRESS_PORT)
@@ -37,8 +41,8 @@ WebHookServer.Builder
 
 /** Handling bot commands */
 
-const check: CheckCommand = new CheckCommand(bot, dbClient, IMAGE_SIMILARITY_THRESHOLD, BOT_TOKEN);
-const persist: PersistCommand = new PersistCommand(bot, dbClient);
+const check: CheckCommand = new CheckCommand(bot, collection, IMAGE_SIMILARITY_THRESHOLD, BOT_TOKEN);
+const persist: PersistCommand = new PersistCommand(bot, collection);
 
 bot.onText(/\/bayan/, async (message: Message) => {
   await check.execute(message);
