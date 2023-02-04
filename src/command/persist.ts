@@ -32,7 +32,7 @@ export class PersistCommand extends ParentCommand {
         messageId: message.message_id,
         filePath: fileInfo.file_path,
         created: new Date(),
-      }
+      };
       const addedData: InsertOneResult<ImageData> = await this.dbClient.addData(imageData);
       if (addedData.acknowledged) {
         logger.debug(`Entry: ${addedData.insertedId} saved.`);

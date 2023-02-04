@@ -34,6 +34,6 @@ const getLogMessage = (info: any): string => {
     .reduce((result: any, key: string) => {
       result[key] = info[key];
       return result;
-    }, {})
+    }, {});
   return JSON.stringify(filteredMessageObject, null, 2);
-}
+};

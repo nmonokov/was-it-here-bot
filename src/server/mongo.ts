@@ -20,7 +20,7 @@ export class DbClient {
     try {
       this._collection = this.connect();
       this._collection.createIndex('chatId');
-      this._collection.createIndex('created', { expireAfterSeconds: ttl })
+      this._collection.createIndex('created', { expireAfterSeconds: ttl });
     } catch (error: any) {
       logger.error('Failed to establish connection to MongoDB.', error);
       throw Error(error.message);
@@ -39,7 +39,7 @@ export class DbClient {
     try {
       return this._collection.insertOne(imageData);
     } catch (error) {
-      logger.error('Failed to save data to MongoDB.', error)
+      logger.error('Failed to save data to MongoDB.', error);
       return {
         acknowledged: false,
         insertedId: ObjectId.createFromHexString(''),
@@ -79,9 +79,9 @@ export class DbClient {
 
     static ttlMonth(ttlMonth: string) {
       const daysInMonth = 30;
-      const hoursInDay = 24
+      const hoursInDay = 24;
       const minutesInHour = 60;
-      const secondsInMinute = 60
+      const secondsInMinute = 60;
       this._ttl = Number(ttlMonth) * daysInMonth * hoursInDay * minutesInHour * secondsInMinute;
       return this;
     }
@@ -89,5 +89,5 @@ export class DbClient {
     static build() {
       return new DbClient(this._username, this._password, this._clusterId, this._ttl);
     }
-  }
+  };
 }

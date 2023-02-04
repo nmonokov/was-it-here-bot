@@ -49,20 +49,20 @@ export class CheckCommand extends ParentCommand {
     const images: ImageData[] = await this.dbClient.getAll(chatId);
     let sameImage;
     for await (const image of images) {
-     if (replyToMessage.message_id !== image.messageId) {
-       const imageToCompareUrl: string = `${this._fileBasePath}/${image.filePath}`;
-       const firstImageResponse = await axios.get(fileLink, { responseType: 'arraybuffer' });
-       const secondImageResponse = await axios.get(imageToCompareUrl, { responseType: 'arraybuffer' });
-       const isSame = await compareImages(
-         firstImageResponse.data,
-         secondImageResponse.data,
-         this._imageSimilarityThreshold
-       );
-       if (isSame) {
-         sameImage = image;
-         break;
-       }
-     }
+      if (replyToMessage.message_id !== image.messageId) {
+        const imageToCompareUrl: string = `${this._fileBasePath}/${image.filePath}`;
+        const firstImageResponse = await axios.get(fileLink, {responseType: 'arraybuffer'});
+        const secondImageResponse = await axios.get(imageToCompareUrl, {responseType: 'arraybuffer'});
+        const isSame = await compareImages(
+          firstImageResponse.data,
+          secondImageResponse.data,
+          this._imageSimilarityThreshold
+        );
+        if (isSame) {
+          sameImage = image;
+          break;
+        }
+      }
     }
     return sameImage;
   }

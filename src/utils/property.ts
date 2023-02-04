@@ -8,7 +8,7 @@
 export const property = (name: string, defaultValue?: any): any => {
   const environmentVariable = process.env[name];
   if (!environmentVariable && !defaultValue) {
-    throw Error(`Environment variable ${name} is not set.`)
+    throw Error(`Environment variable ${name} is not set.`);
   }
   return environmentVariable || defaultValue;
-}
+};

@@ -15,7 +15,7 @@ export abstract class ParentCommand {
 
   abstract execute(message: Message): void;
 
-  protected getMiddleSizeImage (photoSizes: PhotoSize[]): PhotoSize {
+  protected getMiddleSizeImage(photoSizes: PhotoSize[]): PhotoSize {
     const sortedPhotoSizes = photoSizes
       .filter((photo: PhotoSize) => photo.file_size)
       .sort((a: any, b: any) => a.file_size - b.file_size);

@@ -46,4 +46,4 @@ export const compareImages = async (
   const isSame = meanSquaredError < threshold;
   logger.debug({ meanSquaredError, isSame });
   return isSame;
-}
+};
