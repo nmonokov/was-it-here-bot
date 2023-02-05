@@ -1,6 +1,6 @@
 # Was It Here Bot
 
-Have you ever had an argument in the chat that this meme was already there? Have you being annoyed abd frustrated when someone don't remember all those details? Don't worry, I got you! With help of this bot you easily will prove someones wrong(or not :rofl:).
+Have you ever had an argument in the chat that this meme was already there? Have you being annoyed and frustrated when someone don't remember all those details? Don't worry, I got you! With help of this bot you easily will prove someones wrong(or not :rofl:).
 
 ### Commands:
 - `/bayan` - reply to an image you want to check with this command and it will be checked against all data you had before  
