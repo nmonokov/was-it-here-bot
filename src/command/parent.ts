@@ -1,6 +1,4 @@
 import TelegramBot, { Message, PhotoSize } from 'node-telegram-bot-api';
-import { DbClient } from '../server/mongo';
-import { Collection } from 'mongodb';
 
 /**
  * Class for defining possible bot commands.

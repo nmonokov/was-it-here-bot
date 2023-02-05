@@ -28,7 +28,7 @@ describe('check command test', () => {
     const dataToCompare: ImageData = getImageData(replyToMessage.message_id + 1);
     await collection.addData(comparableData);
     await collection.addData(dataToCompare);
-    getStub.resolves({ data: new Buffer('')});
+    getStub.resolves({ data: new Buffer('') });
     imageStub.resolves(true);
 
     await new CheckCommand(instance(botMock), collection, 500, 'token')
@@ -51,7 +51,7 @@ describe('check command test', () => {
     const dataToCompare: ImageData = getImageData(replyToMessage.message_id + 1);
     await collection.addData(comparableData);
     await collection.addData(dataToCompare);
-    getStub.resolves({ data: new Buffer('')});
+    getStub.resolves({ data: new Buffer('') });
     imageStub.resolves(false);
 
     await new CheckCommand(instance(botMock), collection, 500, 'token')

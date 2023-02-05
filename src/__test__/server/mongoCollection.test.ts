@@ -1,6 +1,6 @@
 import { Collection, FindCursor, InsertOneResult, ObjectId, WithId } from 'mongodb';
 import { ImageData } from '../../model';
-import { anyString, anything, deepEqual, instance, match, mock, reset, verify, when } from 'ts-mockito';
+import { anyString, anything, deepEqual, instance, mock, reset, when } from 'ts-mockito';
 import { MongoCollection } from '../../server/mongoCollection';
 import { getImageData } from '../utils';
 

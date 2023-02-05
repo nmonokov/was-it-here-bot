@@ -1,5 +1,5 @@
 import TelegramBot, { Message, PhotoSize } from 'node-telegram-bot-api';
-import { instance, mock, reset, verify, when } from 'ts-mockito';
+import { instance, mock, reset, when } from 'ts-mockito';
 import { TestCollection } from '../testCollection';
 import { getImages, getMessage } from '../utils';
 import { PersistCommand } from '../../command/persist';
