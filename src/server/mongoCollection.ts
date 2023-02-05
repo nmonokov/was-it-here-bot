@@ -19,7 +19,7 @@ export class MongoCollection extends DbCollection<Collection<ImageData>> {
       logger.error('Failed to save data to MongoDB.', error);
       return {
         acknowledged: false,
-        insertedId: ObjectId.createFromHexString(''),
+        insertedId: ObjectId.createFromHexString('000000000000000000000000'),
       };
     }
   }

@@ -15,7 +15,12 @@ export class CheckCommand extends ParentCommand<DbCollection<Collection<ImageDat
   private readonly _imageSimilarityThreshold: number;
   private readonly _fileBasePath: string;
 
-  constructor(bot: TelegramBot, collection: DbCollection<Collection<ImageData>>, imageSimilarityThreshold: number, botToken: string) {
+  constructor(
+    bot: TelegramBot,
+    collection: DbCollection<Collection<ImageData>>,
+    imageSimilarityThreshold: number,
+    botToken: string,
+  ) {
     super(bot, collection);
     this._imageSimilarityThreshold = imageSimilarityThreshold;
     this._fileBasePath = `https://api.telegram.org/file/bot${botToken}`;
@@ -34,7 +39,7 @@ export class CheckCommand extends ParentCommand<DbCollection<Collection<ImageDat
     }
     const fileLink: string = await this.fileLink(replyToMessage.photo);
     const sameImage: ImageData | undefined = await this.findSameImage(chatId, replyToMessage, fileLink);
-    await this.respond(sameImage, chatId);
+    await this.respond(chatId, sameImage);
   }
 
   private async fileLink(photoSizes: PhotoSize[]): Promise<string> {
@@ -68,11 +73,12 @@ export class CheckCommand extends ParentCommand<DbCollection<Collection<ImageDat
     return sameImage;
   }
 
-  private respond(sameImage: ImageData | undefined, chatId: number): void {
+  private respond(chatId: number, sameImage?: ImageData): void {
     if (sameImage) {
-      this._bot.sendMessage(chatId, 'this', {
+      const options = {
         reply_to_message_id: sameImage.messageId,
-      });
+      };
+      this._bot.sendMessage(chatId, 'this', options);
       this._bot.sendSticker(chatId, Sticker.OLD);
     } else {
       this._bot.sendSticker(chatId, Sticker.NEW);

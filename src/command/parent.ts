@@ -19,7 +19,7 @@ export abstract class ParentCommand<T> {
   protected getMiddleSizeImage(photoSizes: PhotoSize[]): PhotoSize {
     const sortedPhotoSizes = photoSizes
       .filter((photo: PhotoSize) => photo.file_size)
-      .sort((a: any, b: any) => a.file_size - b.file_size);
+      .sort((firstPhoto: any, secondPhoto: any) => firstPhoto.file_size - secondPhoto.file_size);
     const middleIndex = Math.floor(sortedPhotoSizes.length / 2);
     return sortedPhotoSizes[middleIndex];
   }

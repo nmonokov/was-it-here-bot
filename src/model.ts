@@ -2,7 +2,7 @@ export interface ImageData {
   chatId: number;
   messageId: number;
   filePath: string;
-  created: Date;
+  created?: Date;
 }
 
 export const enum Sticker {

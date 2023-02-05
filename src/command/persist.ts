@@ -1,5 +1,5 @@
 import { ParentCommand } from './parent';
-import TelegramBot from 'node-telegram-bot-api';
+import TelegramBot, { PhotoSize, File } from 'node-telegram-bot-api';
 import { ImageData } from '../model';
 import { Collection, InsertOneResult } from 'mongodb';
 import { logger } from '../utils/logger';
@@ -24,8 +24,8 @@ export class PersistCommand extends ParentCommand<DbCollection<Collection<ImageD
     if (!message.photo) {
       return;
     }
-    const middleSizeImage = this.getMiddleSizeImage(message.photo);
-    const fileInfo = await this._bot.getFile(middleSizeImage.file_id);
+    const middleSizeImage: PhotoSize = this.getMiddleSizeImage(message.photo);
+    const fileInfo: File = await this._bot.getFile(middleSizeImage.file_id);
     if (fileInfo.file_path) {
       const imageData: ImageData = {
         chatId: message.chat.id,
