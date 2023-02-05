@@ -11,9 +11,9 @@ export class TestCollection extends DbCollection<any> {
     if (!this._collection[String(imageData.chatId)]) {
       this._collection[String(imageData.chatId)] = [];
     }
-    const number = this._collection[String(imageData.chatId)].push(imageData);
+    const items: number = this._collection[String(imageData.chatId)].push(imageData);
     return Promise.resolve({
-      acknowledged: number > 0,
+      acknowledged: items > 0,
       insertedId: ObjectId.createFromTime(new Date().getTime()),
     });
   }

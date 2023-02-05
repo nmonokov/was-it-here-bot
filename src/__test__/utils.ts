@@ -36,7 +36,7 @@ export const getImages = (): PhotoSize[] => [
 
 export const getImageData = (messageId: number): ImageData => ({
   chatId: 0,
-  messageId: messageId,
+  messageId,
   filePath: 'comparable/file/path',
   created: new Date(),
 });

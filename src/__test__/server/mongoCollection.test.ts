@@ -58,7 +58,7 @@ describe('mongo collection test', () => {
       filePath: imageData.filePath,
       messageId: imageData.messageId,
     };
-    when(collectionMock.find(deepEqual({ chatId: 0 }))).thenThrow(new Error);
+    when(collectionMock.find(deepEqual({ chatId: 0 }))).thenThrow(new Error());
     when(findCursor.toArray()).thenReturn(Promise.resolve([expected]));
 
     const result = await new MongoCollection(instance(collectionMock)).getAll(0);
