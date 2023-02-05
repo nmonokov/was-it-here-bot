@@ -1,12 +1,12 @@
 # Was It Here Bot
 
-Have you ever had an argument in the chat that this meme was already there? Have you being annoyed abd frustrated when someone don't remember all those details? Don't worry, I got you! With help of this bot you easily will prove someones wrong(or not :rofl:).
+Have you ever had an argument in a chat about whether a meme has already been posted? Have you been frustrated and annoyed when someone can't recall all the details? Don't worry, I've got you covered! With the help of this bot, you can easily prove someone wrong(or not :rofl:).
 
 ### Commands:
 - `/bayan` - reply to an image you want to check with this command and it will be checked against all data you had before  
 
 ### Setup:
-1. Create your bot in the **@BotFather**. Find it in the telegram and follow the prompts to create your own bot. You need to take generate a token for your bot and save it to `BOT_TOKEN` in the `.env` file. 
+1. Create your bot in the **@BotFather**. Find it in the telegram and follow the prompts to create your own bot. You need to take the generated token for your bot and save it to `BOT_TOKEN` in the `.env` file. 
 2. Add user to a group/supergroup and make sure it has Admin access rights. Otherwise, it won't be able to read all conversation in order to find images and save it's' metadata in order to use it further.
 3. Install [ngrok](https://ngrok.com/) for web hook setup.
     ```
@@ -22,14 +22,14 @@ Have you ever had an argument in the chat that this meme was already there? Have
 7. Create a **Cluster**. You can use defaults. 
 8. You will be prompt to a **Quickstart**. Use Username and Password. Put those also into the `DB_USERNAME` and `DB_PASSWORD` respectively.
 9. **Where would you like to connect from?** - be sure to add your IP or IP of the machine you're deploying bot to.
-10. You will be prompt to Database Deployments. Click on Cluster0 > Connect > Connect your application. You'll see this:
+10. You will be prompt to **Database Deployments**. **Click on Cluster0** > **Connect** > **Connect** your application. You'll see this:
     ```
     mongodb+srv://youruser:<password>@cluster0.xxxxxxx.mongodb.net/?retryWrites=true&w=majority
     ```
     Pick *cluster0.xxxxxxx* and put it into the variable `DB_CLUSTER_ID`.
     Setup is complete. On bot startup the **Database** and the **Collection** will be created automatically. If you want to change it, go to environment variables and pick your own names for those and still they will be added automatically.
-    * `DB_NAME` - Database
-    * `DB_COLLECTION_NAME` - Collection
+    * `DB_NAME`
+    * `DB_COLLECTION_NAME`
 11. `npm install`
 12. `npm start`
 
