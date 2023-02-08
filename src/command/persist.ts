@@ -17,7 +17,6 @@ export class PersistCommand extends ParentCommand<DbCollection<Collection<ImageD
   }
 
   async execute(message: TelegramBot.Message): Promise<void> {
-    logger.debug(message);
     if (message.text?.startsWith('/')) {
       return;
     }
