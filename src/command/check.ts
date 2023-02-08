@@ -2,9 +2,10 @@ import { ParentCommand } from './parent';
 import TelegramBot, { Message, PhotoSize } from 'node-telegram-bot-api';
 import { ImageData, Sticker } from '../model';
 import { compareImages } from '../image/compare';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { DbCollection } from '../server/dbCollection';
 import { Collection } from 'mongodb';
+import { logger } from '../utils/logger';
 
 /**
  * /bayan - check command if selected message in reply is an image already occurred in the chat or not.
@@ -58,7 +59,13 @@ export class CheckCommand extends ParentCommand<DbCollection<Collection<ImageDat
       if (replyToMessage.message_id !== image.messageId) {
         const imageToCompareUrl: string = `${this._fileBasePath}/${image.filePath}`;
         const firstImageResponse = await axios.get(fileLink, { responseType: 'arraybuffer' });
-        const secondImageResponse = await axios.get(imageToCompareUrl, { responseType: 'arraybuffer' });
+        let secondImageResponse: AxiosResponse<any>;
+        try {
+          secondImageResponse = await axios.get(imageToCompareUrl, { responseType: 'arraybuffer' });
+        } catch (error) {
+          logger.error('Failed to fetch the image', { url: imageToCompareUrl, error })
+          continue;
+        }
         const isSame = await compareImages(
           firstImageResponse.data,
           secondImageResponse.data,
